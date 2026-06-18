@@ -1,39 +1,46 @@
-import { useGLTF, useTexture, Center } from '@react-three/drei';
-import { useMemo } from 'react';
+import {
+  useGLTF,
+  useTexture,
+  Center,
+  TransformControls,
+} from '@react-three/drei';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 // https://gltf.report/
 
 export default function House() {
-  const { nodes } = useGLTF('./gltf/tendaUnify.glb');
-  console.log('...........', nodes.tenda.geometry);
-
+  const { nodes } = useGLTF('./gltf/tendaUnifyv1.glb');
   const bakedTestureHouse = useTexture('./bake/bake.jpg');
   bakedTestureHouse.flipY = false;
+  bakedTestureHouse.colorSpace = THREE.SRGBColorSpace;
+  bakedTestureHouse.anisotropy = 16;
 
-  // const glassTableMaterial = useMemo(
-  //   () =>
-  //     new THREE.MeshPhysicalMaterial({
-  //       transmission: 1.0,
-  //       transparent: true,
-  //       roughness: 0.0,
-  //       metalness: 0.0,
-  //       ior: 1.5,
-  //       thickness: 0.6,
-  //       attenuationColor: new THREE.Color(0x88ccee),
-  //       attenuationDistance: 0.5,
-  //       envMapIntensity: 1.5,
-  //     }),
-  //   []
-  // );
+  // console.log('...........', nodes.lampada.position);
+
+  const donationLight = new THREE.MeshStandardMaterial({
+    color: 0xff6600,
+    emissive: new THREE.Color(0xff4400),
+    emissiveIntensity: 3.0,
+    roughness: 0.1,
+    metalness: 0.8,
+  });
+
+  // const transformRef = useRef();
+  // const meshRef = useRef();
+
+  // const getPosition = () => {
+  //   const object = transformRef.current?.object;
+  //   console.log('position obj', object?.position);
+  // };
 
   // nodes.vidro_mesa.position.x = 0.819228437991848;
   // nodes.vidro_mesa.position.y = -8.817037406785715;
   // nodes.vidro_mesa.position.z = 0.149929950065959;
 
-  // nodes.vidro_janela.position.x = 0.819228437991848;
-  // nodes.vidro_janela.position.y = -8.817037406785715;
-  // nodes.vidro_janela.position.z = 0.149929950065959;
+  nodes.lampada.position.x = 4.936184232853194;
+  nodes.lampada.position.y = -3.808529372444565;
+  nodes.lampada.position.z = -6.375673738390482;
 
   return (
     <>
@@ -42,25 +49,24 @@ export default function House() {
         <mesh geometry={nodes.tenda.geometry}>
           <meshStandardMaterial
             color="white"
-            emissive="white"
+            emissive="yellow"
             emissiveMap={bakedTestureHouse}
-            emissiveIntensity={0.4}
-            roughness={0.9}
-            metalness={0.9}
+            emissiveIntensity={0.6}
+            roughness={1}
+            metalness={1}
           />
         </mesh>
       </Center>
-
-      {/* <mesh
-        // ref={meshRef}
-        geometry={nodes.vidro_mesa.geometry}
-        material={glassTableMaterial}
-        position={nodes.vidro_mesa.position}
-        rotation={nodes.vidro_mesa.rotation}
-        scale={nodes.vidro_mesa.scale}
-      />
-
+      {/* <TransformControls ref={transformRef} onObjectChange={getPosition}> */}
       <mesh
+        // ref={meshRef}
+        geometry={nodes.lampada.geometry}
+        material={donationLight}
+        position={nodes.lampada.position}
+        rotation={nodes.lampada.rotation}
+      />
+      {/* </TransformControls> */}
+      {/* <mesh
         material={glassTableMaterial}
         geometry={nodes.vidro_janela.geometry}
         position={nodes.vidro_janela.position}

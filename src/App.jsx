@@ -23,8 +23,7 @@ function App() {
 
   // 180/ deg = graus
 
-  const positionCam = [5, 1.6, 14];
-
+  const positionCam = [-3, -2, -2];
   return (
     <div className="app">
       <header className="section header"></header>
@@ -32,6 +31,11 @@ function App() {
       <div className="section canvas-container">
         <Canvas
           shadows
+          dpr={[1, 2]}
+          gl={{
+            antialias: true,
+            powerPreference: 'high-performance',
+          }}
           camera={{
             position: positionCam,
             fov: 75,
@@ -40,7 +44,7 @@ function App() {
           }}
         >
           <>
-            <PointerLockControlsCustom otherTypeCam={true} />
+            <PointerLockControlsCustom otherTypeCam={false} />
 
             <House />
             {/* <TextCustom
