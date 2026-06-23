@@ -1,12 +1,12 @@
 import './App.css';
 import { Canvas } from '@react-three/fiber';
-import House from './components/house';
+import Tent from './components/tent';
 // import { Perf } from 'r3f-perf';
-
 import PointerLockControlsCustom from './components/controls';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import FlashLight from './components/flashLight';
 import TextCustom from './components/text';
+import TouchSistem from './components/touchSistem';
 
 // npm run lint -- --fix
 
@@ -24,7 +24,6 @@ function App() {
   // 180/ deg = graus
 
   const [cameraSpawn, setCameraSpawn] = useState(null);
-
   const positionCam = [-3, -2, -2];
   return (
     <div className="app">
@@ -51,7 +50,8 @@ function App() {
               cameraSpawn={cameraSpawn}
             />
 
-            <House setCameraSpawn={setCameraSpawn} />
+            <Tent setCameraSpawn={setCameraSpawn} />
+            <TouchSistem />
             {/* <TextCustom
                 rot={[0, 1.7, 0]}
                 pos={[-7, -2, 6]}

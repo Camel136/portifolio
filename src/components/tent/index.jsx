@@ -9,7 +9,7 @@ import * as THREE from 'three';
 
 // https://gltf.report/
 
-export default function House({ setCameraSpawn }) {
+export default function Tent({ setCameraSpawn }) {
   const { nodes } = useGLTF('./gltf/tendaUnifyv2.glb');
   const bakedTestureHouse = useTexture('./bake/bake.jpg');
   const bakeGround = useTexture('./bake/bakeGround.jpg');
