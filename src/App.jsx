@@ -24,6 +24,12 @@ function App() {
   // 180/ deg = graus
 
   const [cameraSpawn, setCameraSpawn] = useState(null);
+  let init = false;
+
+  if (cameraSpawn !== null) {
+    init = true;
+  }
+
   const positionCam = [-3, -2, -2];
   return (
     <div className="app">
@@ -51,7 +57,7 @@ function App() {
             />
 
             <Tent setCameraSpawn={setCameraSpawn} />
-            <TouchSistem />
+            <TouchSistem IsTimeToShow={init} />
             {/* <TextCustom
                 rot={[0, 1.7, 0]}
                 pos={[-7, -2, 6]}
