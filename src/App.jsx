@@ -23,6 +23,8 @@ function App() {
 
   // 180/ deg = graus
 
+  const [cameraSpawn, setCameraSpawn] = useState(null);
+
   const positionCam = [-3, -2, -2];
   return (
     <div className="app">
@@ -44,9 +46,12 @@ function App() {
           }}
         >
           <>
-            <PointerLockControlsCustom otherTypeCam={true} />
+            <PointerLockControlsCustom
+              otherTypeCam={true}
+              cameraSpawn={cameraSpawn}
+            />
 
-            <House />
+            <House setCameraSpawn={setCameraSpawn} />
             {/* <TextCustom
                 rot={[0, 1.7, 0]}
                 pos={[-7, -2, 6]}

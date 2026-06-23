@@ -4,12 +4,12 @@ import {
   Center,
   TransformControls,
 } from '@react-three/drei';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 // https://gltf.report/
 
-export default function House() {
+export default function House({ setCameraSpawn }) {
   const { nodes } = useGLTF('./gltf/tendaUnifyv2.glb');
   const bakedTestureHouse = useTexture('./bake/bake.jpg');
   const bakeGround = useTexture('./bake/bakeGround.jpg');
@@ -34,6 +34,15 @@ export default function House() {
     roughness: 0.1,
     metalness: 0.8,
   });
+
+  useEffect(() => {
+    if (nodes.cameraSpawn) {
+      setCameraSpawn({
+        position: nodes.cameraSpawn.position.clone(),
+        quaternion: nodes.cameraSpawn.quaternion.clone(),
+      });
+    }
+  }, [nodes]);
 
   // const transformRef = useRef();
   // const meshRef = useRef();
