@@ -5,7 +5,7 @@ import Tent from './components/tent';
 import PointerLockControlsCustom from './components/controls';
 import { useState } from 'react';
 // import FlashLight from './components/flashLight';
-// import TextCustom from './components/text';
+import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
 
 // npm run lint -- --fix
@@ -23,14 +23,15 @@ function App() {
 
   // 180/ deg = graus
 
+  const [insideOfTent, setInsideOfTent] = useState(false);
   const [cameraSpawn, setCameraSpawn] = useState(null);
+  const [peopleViewCam, setPeopleViewCam] = useState(null);
   let init = false;
 
   if (cameraSpawn !== null) {
     init = true;
   }
 
-  const positionCam = [-3, -2, -2];
   return (
     <div className="app">
       <header className="section header"></header>
@@ -44,7 +45,6 @@ function App() {
             powerPreference: 'high-performance',
           }}
           camera={{
-            position: positionCam,
             fov: 75,
             near: 0.1,
             far: 1000,
@@ -52,18 +52,26 @@ function App() {
         >
           <>
             <PointerLockControlsCustom
-              otherTypeCam={true}
+              otherTypeCam={insideOfTent}
               cameraSpawn={cameraSpawn}
+              peopleViewCam={peopleViewCam}
             />
 
-            <Tent setCameraSpawn={setCameraSpawn} />
-            <TouchSistem IsTimeToShow={init} />
+            <Tent
+              setCameraSpawn={setCameraSpawn}
+              setPeopleViewCam={setPeopleViewCam}
+            />
+            <TouchSistem
+              IsTimeToShow={init}
+              setInsideOfTent={setInsideOfTent}
+            />
             {/* <TextCustom
-                rot={[0, 1.7, 0]}
-                pos={[-7, -2, 6]}
-                text="aperte ESC pra sair "
-                color="white"
-              /> */}
+              rot={[0, 1, 0]}
+              pos={[0, 0, 0]}
+              text="aperte ESC pra sair "
+              color="white"
+              IsTimeToShow={init}
+            /> */}
             {/* <FlashLight /> */}
           </>
 

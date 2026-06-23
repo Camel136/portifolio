@@ -6,6 +6,7 @@ import * as THREE from 'three';
 export default function PointerLockControlsCustom({
   otherTypeCam,
   cameraSpawn,
+  peopleViewCam,
 }) {
   const touchStart = useRef({ x: 0, y: 0 });
   const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
@@ -21,14 +22,17 @@ export default function PointerLockControlsCustom({
   };
 
   useEffect(() => {
-    if (!cameraSpawn) return;
+    if (cameraSpawn && !otherTypeCam) {
+      camera.position.copy(cameraSpawn.position);
+      camera.quaternion.copy(cameraSpawn.quaternion);
+    }
+    if (peopleViewCam && otherTypeCam) {
+      camera.position.copy(peopleViewCam.position);
+      camera.quaternion.copy(peopleViewCam.quaternion);
+    }
+  }, [cameraSpawn, peopleViewCam, otherTypeCam]);
 
-    camera.position.copy(cameraSpawn.position);
-
-    camera.quaternion.copy(cameraSpawn.quaternion);
-  }, [cameraSpawn]);
-
-  if (otherTypeCam) {
+  if (!otherTypeCam) {
     return (
       <OrbitControls
         makeDefault

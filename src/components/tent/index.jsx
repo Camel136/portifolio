@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 // https://gltf.report/
 
-export default function Tent({ setCameraSpawn }) {
+export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
   const { nodes } = useGLTF('./gltf/tendaUnifyv2.glb');
   const bakedTestureHouse = useTexture('./bake/bake.jpg');
   const bakeGround = useTexture('./bake/bakeGround.jpg');
@@ -35,6 +35,12 @@ export default function Tent({ setCameraSpawn }) {
       setCameraSpawn({
         position: nodes.cameraSpawn.position.clone(),
         quaternion: nodes.cameraSpawn.quaternion.clone(),
+      });
+    }
+    if (nodes.PeopleView) {
+      setPeopleViewCam({
+        position: nodes.PeopleView.position.clone(),
+        quaternion: nodes.PeopleView.quaternion.clone(),
       });
     }
   }, [nodes]);

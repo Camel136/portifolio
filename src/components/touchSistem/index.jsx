@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { TransformControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
-export default function TouchSistem({ IsTimeToShow }) {
+export default function TouchSistem({ IsTimeToShow, setInsideOfTent }) {
   const ref = useRef();
   const [showRing, setShowRing] = useState(false);
 
@@ -50,13 +50,14 @@ export default function TouchSistem({ IsTimeToShow }) {
           ref={ref}
           position={[-9.306830224712446, 5.32323169803203, -4.874134627868665]}
           rotation={[0, 1, 0]}
+          onPointerDown={() => setInsideOfTent(true)}
         >
           <ringGeometry args={[0.8, 1.2, 32]} />
           <meshBasicMaterial
             color="white"
             transparent
             opacity={colorPower.current}
-            side={THREE.DoubleSide}
+            side={THREE.BackSide}
           />
         </mesh>
       )}
