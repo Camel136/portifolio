@@ -1,6 +1,7 @@
 import { useGLTF, useTexture, TransformControls } from '@react-three/drei';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import TouchSistem from '../touchSistem';
 
 // https://gltf.report/
 
@@ -46,7 +47,6 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
   }, [nodes]);
 
   // const transformRef = useRef();
-  // const meshRef = useRef();
 
   // const getPosition = () => {
   //   const object = transformRef.current?.object;
@@ -85,6 +85,33 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
       </mesh>
 
       <mesh geometry={nodes.lampada.geometry} material={donationLight}></mesh>
+
+      <TouchSistem
+        IsTimeToShow={true}
+        setInsideOfTent={() => {}}
+        position={[6.036360674943395, 3.9437996881855018, -4.548282089719551]}
+        rotation={[1.5, 0, 0]}
+      />
+
+      <TouchSistem
+        IsTimeToShow={true}
+        setInsideOfTent={() => {}}
+        position={[-0.9746321190187572, 5.173910287828369, 7.274120799127293]}
+        rotation={[0, -0.3, 0]}
+      />
+
+      <TouchSistem
+        IsTimeToShow={true}
+        setInsideOfTent={() => {}}
+        position={[-3.4260952732574075, 5.206571605452476, 6.4372730871748916]}
+        rotation={[0, -0.1, 0]}
+      />
+      {/* <TransformControls
+        ref={transformRef}
+        mode="translate"
+        enabled={true}
+        onObjectChange={getPosition}
+      ></TransformControls> */}
     </>
   );
 }

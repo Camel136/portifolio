@@ -7,6 +7,7 @@ import { useState } from 'react';
 // import FlashLight from './components/flashLight';
 import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
+import * as THREE from 'three';
 
 // npm run lint -- --fix
 
@@ -64,6 +65,11 @@ function App() {
             <TouchSistem
               IsTimeToShow={init}
               setInsideOfTent={setInsideOfTent}
+              position={[
+                -9.306830224712446, 5.32323169803203, -4.874134627868665,
+              ]}
+              rotation={[0, 1, 0]}
+              side={THREE.BackSide}
             />
             {/* <TextCustom
               rot={[0, 1, 0]}
