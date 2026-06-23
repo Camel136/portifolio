@@ -1,10 +1,5 @@
-import {
-  useGLTF,
-  useTexture,
-  Center,
-  TransformControls,
-} from '@react-three/drei';
-import { useEffect, useMemo, useRef } from 'react';
+import { useGLTF, useTexture, TransformControls } from '@react-three/drei';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 
 // https://gltf.report/

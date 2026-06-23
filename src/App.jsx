@@ -3,9 +3,9 @@ import { Canvas } from '@react-three/fiber';
 import Tent from './components/tent';
 // import { Perf } from 'r3f-perf';
 import PointerLockControlsCustom from './components/controls';
-import { useRef, useState } from 'react';
-import FlashLight from './components/flashLight';
-import TextCustom from './components/text';
+import { useState } from 'react';
+// import FlashLight from './components/flashLight';
+// import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
 
 // npm run lint -- --fix
