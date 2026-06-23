@@ -17,7 +17,13 @@ export default function PointerLockControlsCustom({ otherTypeCam }) {
   };
 
   if (otherTypeCam) {
-    return <OrbitControls makeDefault minPolarAngle={ANGLE.DEG_75} />;
+    return (
+      <OrbitControls
+        makeDefault
+        minPolarAngle={ANGLE.DEG_30}
+        maxPolarAngle={ANGLE.DEG_75}
+      />
+    );
   }
 
   return <PointerLockControls />;

@@ -10,17 +10,26 @@ import * as THREE from 'three';
 // https://gltf.report/
 
 export default function House() {
-  const { nodes } = useGLTF('./gltf/tendaUnifyv1.glb');
+  const { nodes } = useGLTF('./gltf/tendaUnifyv2.glb');
   const bakedTestureHouse = useTexture('./bake/bake.jpg');
+  const bakeGround = useTexture('./bake/bakeGround.jpg');
+  const bakeTent = useTexture('./bake/bakeTent.jpg');
+
+  bakeGround.flipY = false;
+  bakeGround.colorSpace = THREE.SRGBColorSpace;
+  bakeGround.anisotropy = 16;
+
   bakedTestureHouse.flipY = false;
   bakedTestureHouse.colorSpace = THREE.SRGBColorSpace;
   bakedTestureHouse.anisotropy = 16;
 
-  // console.log('...........', nodes.lampada.position);
+  bakeTent.flipY = false;
+  bakeTent.colorSpace = THREE.SRGBColorSpace;
+  bakeTent.anisotropy = 16;
 
   const donationLight = new THREE.MeshStandardMaterial({
-    color: 0xff6600,
-    emissive: new THREE.Color(0xff4400),
+    color: 0xfffad9,
+    emissive: new THREE.Color(0xfffad9),
     emissiveIntensity: 3.0,
     roughness: 0.1,
     metalness: 0.8,
@@ -34,45 +43,38 @@ export default function House() {
   //   console.log('position obj', object?.position);
   // };
 
-  // nodes.vidro_mesa.position.x = 0.819228437991848;
-  // nodes.vidro_mesa.position.y = -8.817037406785715;
-  // nodes.vidro_mesa.position.z = 0.149929950065959;
-
-  nodes.lampada.position.x = 4.936184232853194;
-  nodes.lampada.position.y = -3.808529372444565;
-  nodes.lampada.position.z = -6.375673738390482;
-
   return (
     <>
       <color attach="background" args={['#000000']} />
-      <Center>
-        <mesh geometry={nodes.tenda.geometry}>
-          <meshStandardMaterial
-            color="white"
-            emissive="yellow"
-            emissiveMap={bakedTestureHouse}
-            emissiveIntensity={0.6}
-            roughness={1}
-            metalness={1}
-          />
-        </mesh>
-      </Center>
-      {/* <TransformControls ref={transformRef} onObjectChange={getPosition}> */}
-      <mesh
-        // ref={meshRef}
-        geometry={nodes.lampada.geometry}
-        material={donationLight}
-        position={nodes.lampada.position}
-        rotation={nodes.lampada.rotation}
-      />
-      {/* </TransformControls> */}
-      {/* <mesh
-        material={glassTableMaterial}
-        geometry={nodes.vidro_janela.geometry}
-        position={nodes.vidro_janela.position}
-        rotation={nodes.vidro_janela.rotation}
-        scale={nodes.vidro_janela.scale}
-      /> */}
+      <mesh geometry={nodes.cena.geometry}>
+        <meshStandardMaterial
+          color="white"
+          emissive="white"
+          emissiveMap={bakedTestureHouse}
+          emissiveIntensity={1}
+          roughness={1}
+          metalness={1}
+        />
+      </mesh>
+      <mesh geometry={nodes.chao.geometry}>
+        <meshStandardMaterial
+          color="white"
+          emissive="white"
+          emissiveMap={bakeGround}
+          emissiveIntensity={0.6}
+        />
+      </mesh>
+
+      <mesh geometry={nodes.tenda.geometry}>
+        <meshStandardMaterial
+          color="white"
+          emissive="white"
+          emissiveMap={bakeTent}
+          emissiveIntensity={0.4}
+        />
+      </mesh>
+
+      <mesh geometry={nodes.lampada.geometry} material={donationLight}></mesh>
     </>
   );
 }

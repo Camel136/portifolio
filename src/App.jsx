@@ -44,7 +44,7 @@ function App() {
           }}
         >
           <>
-            <PointerLockControlsCustom otherTypeCam={false} />
+            <PointerLockControlsCustom otherTypeCam={true} />
 
             <House />
             {/* <TextCustom
