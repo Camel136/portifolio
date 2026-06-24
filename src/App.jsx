@@ -8,6 +8,7 @@ import { useState } from 'react';
 import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
 import * as THREE from 'three';
+import useInstruction from './components/utils/useInstruction';
 
 // npm run lint -- --fix
 
@@ -28,7 +29,7 @@ function App() {
   const [cameraSpawn, setCameraSpawn] = useState(null);
   const [peopleViewCam, setPeopleViewCam] = useState(null);
   let init = false;
-
+  const instruction = useInstruction(insideOfTent);
   if (cameraSpawn !== null) {
     init = true;
   }
@@ -85,7 +86,9 @@ function App() {
         </Canvas>
       </div>
 
-      <footer className="section footer"></footer>
+      <footer className="section footer">
+        <p>{instruction}</p>
+      </footer>
     </div>
   );
 }

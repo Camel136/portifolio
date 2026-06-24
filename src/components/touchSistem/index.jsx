@@ -41,7 +41,7 @@ export default function TouchSistem({
           rotation={rotation}
           onPointerDown={() => setInsideOfTent(true)}
         >
-          <ringGeometry args={[0.8, 1.2, 32]} />
+          <ringGeometry args={[0.8, 1.1, 32]} />
           <meshBasicMaterial
             color="white"
             transparent
