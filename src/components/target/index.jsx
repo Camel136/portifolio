@@ -1,13 +1,14 @@
 import { useRef } from 'react';
 import * as THREE from 'three';
 import { useThree, useFrame } from '@react-three/fiber';
+import { useHelper } from '@react-three/drei';
 
-export default function FlashLight() {
+export default function Target() {
   const lightRef = useRef();
   const { camera } = useThree();
   const direction = new THREE.Vector3();
 
-  //useHelper(lightRef, THREE.SpotLightHelper, 'cyan');
+  useHelper(lightRef, THREE.SpotLightHelper, 'white');
 
   useFrame(() => {
     if (!lightRef.current) return;
@@ -31,12 +32,12 @@ export default function FlashLight() {
   return (
     <spotLight
       ref={lightRef}
-      angle={0.4}
-      penumbra={0.2}
-      intensity={30}
-      distance={50}
+      angle={0.01}
+      penumbra={1}
+      intensity={0}
+      distance={1}
       decay={2}
-      color="#ff0000"
+      color="#ffffff"
       castShadow
       shadow-mapSize={[1024, 1024]}
     />

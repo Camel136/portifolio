@@ -9,6 +9,7 @@ export default function TouchSistem({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   side = THREE.DoubleSide,
+  args = [0.8, 1.1, 32],
 }) {
   const ref = useRef();
   const [showRing, setShowRing] = useState(false);
@@ -19,7 +20,7 @@ export default function TouchSistem({
     time.current += delta;
 
     const pulse = Math.sin(time.current * 2) * 0.5 + 0.5;
-    colorPower.current = 0.01 + pulse * 1;
+    colorPower.current = 0.01 + pulse * 0.2;
 
     if (ref.current) {
       ref.current.material.opacity = colorPower.current;
@@ -41,7 +42,7 @@ export default function TouchSistem({
           rotation={rotation}
           onPointerDown={() => setInsideOfTent(true)}
         >
-          <ringGeometry args={[0.8, 1.1, 32]} />
+          <ringGeometry args={args} />
           <meshBasicMaterial
             color="white"
             transparent

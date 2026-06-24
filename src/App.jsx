@@ -4,11 +4,12 @@ import Tent from './components/tent';
 // import { Perf } from 'r3f-perf';
 import PointerLockControlsCustom from './components/controls';
 import { useState } from 'react';
-// import FlashLight from './components/flashLight';
+import FlashLight from './components/target';
 import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
 import * as THREE from 'three';
 import useInstruction from './components/utils/useInstruction';
+import Target from './components/target';
 
 // npm run lint -- --fix
 
@@ -28,8 +29,10 @@ function App() {
   const [insideOfTent, setInsideOfTent] = useState(false);
   const [cameraSpawn, setCameraSpawn] = useState(null);
   const [peopleViewCam, setPeopleViewCam] = useState(null);
-  let init = false;
   const instruction = useInstruction(insideOfTent);
+
+  let init = false;
+
   if (cameraSpawn !== null) {
     init = true;
   }
@@ -71,6 +74,7 @@ function App() {
               ]}
               rotation={[0, 1, 0]}
               side={THREE.BackSide}
+              args={[0.2, 1.1, 32]}
             />
             {/* <TextCustom
               rot={[0, 1, 0]}
@@ -79,10 +83,8 @@ function App() {
               color="white"
               IsTimeToShow={init}
             /> */}
-            {/* <FlashLight /> */}
+            {insideOfTent && <Target />}
           </>
-
-          {/* <Perf /> */}
         </Canvas>
       </div>
 

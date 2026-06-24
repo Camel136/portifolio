@@ -91,6 +91,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         setInsideOfTent={() => {}}
         position={[6.036360674943395, 3.9437996881855018, -4.548282089719551]}
         rotation={[1.5, 0, 0]}
+        args={[0.6, 0.2, 32]}
       />
 
       <TouchSistem
@@ -98,6 +99,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         setInsideOfTent={() => {}}
         position={[-0.9746321190187572, 5.173910287828369, 7.274120799127293]}
         rotation={[0, -0.3, 0]}
+        args={[0.6, 0.2, 32]}
       />
 
       <TouchSistem
@@ -105,6 +107,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         setInsideOfTent={() => {}}
         position={[-3.4260952732574075, 5.206571605452476, 6.4372730871748916]}
         rotation={[0, -0.1, 0]}
+        args={[0.6, 0.2, 32]}
       />
       {/* <TransformControls
         ref={transformRef}
