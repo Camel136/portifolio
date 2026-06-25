@@ -11,6 +11,7 @@ function TouchSistem(
     rotation = [0, 0, 0],
     side = THREE.DoubleSide,
     args = [0.8, 1.1, 32],
+    name,
   },
   ref
 ) {
@@ -41,6 +42,7 @@ function TouchSistem(
     <>
       {showRing && (
         <mesh
+          name={name}
           ref={meshRef}
           position={position}
           rotation={rotation}

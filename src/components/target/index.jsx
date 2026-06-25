@@ -10,10 +10,13 @@ export default function Target() {
   const direction = new THREE.Vector3();
   const raycaster = new THREE.Raycaster();
   const { smartphoneRef, pcLeftRef, pcRightRef } = useContext(Context);
+  const currentTarget = useRef(null);
+  const focusTime = useRef(0);
+  const activated = useRef(false);
 
   useHelper(lightRef, THREE.SpotLightHelper, 'white');
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!lightRef.current) return;
     // spotlight segue posição da câmera
     lightRef.current.position.copy(camera.position);
@@ -40,8 +43,25 @@ export default function Target() {
     const hits = raycaster.intersectObjects(targets, false);
 
     if (hits.length > 0) {
-      console.log('hit:', hits[0].object);
+      const target = hits[0].object;
+
+      if (currentTarget.current !== target) {
+        currentTarget.current = target;
+        focusTime.current = 0;
+        activated.current = false;
+      }
+      focusTime.current += delta; //aqui conta
+      if (focusTime.current >= 2 && !activated.current) {
+        activated.current = true;
+
+        console.log('🔥 INTERAÇÃO ATIVADA:', target);
+      }
+    } else {
+      currentTarget.current = null;
+      focusTime.current = 0;
+      activated.current = false;
     }
+
     ////
     lightRef.current.target.updateMatrixWorld();
   });

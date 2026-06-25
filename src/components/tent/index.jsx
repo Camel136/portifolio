@@ -96,6 +96,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         rotation={[1.5, 0, 0]}
         args={[0.7, 0.2, 32]}
         ref={smartphoneRef}
+        name="smartphoneRef"
       />
 
       <TouchSistem
@@ -105,6 +106,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         rotation={[0, -0.3, 0]}
         args={[0.5, 0.1, 32]}
         ref={pcLeftRef}
+        name="pcLeftRef"
       />
 
       <TouchSistem
@@ -114,6 +116,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         rotation={[0, -0.1, 0]}
         args={[0.5, 0.1, 32]}
         ref={pcRightRef}
+        name="pcRightRef"
       />
       {/* <TransformControls
         ref={transformRef}
