@@ -1,7 +1,8 @@
 import { useGLTF, useTexture, TransformControls } from '@react-three/drei';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import * as THREE from 'three';
 import TouchSistem from '../touchSistem';
+import { Context } from '../context/context';
 
 // https://gltf.report/
 
@@ -30,6 +31,8 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
     roughness: 0.1,
     metalness: 0.8,
   });
+
+  const { smartphoneRef, pcLeftRef, pcRightRef } = useContext(Context);
 
   useEffect(() => {
     if (nodes.cameraSpawn) {
@@ -92,6 +95,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         position={[6.036360674943395, 3.9437996881855018, -4.548282089719551]}
         rotation={[1.5, 0, 0]}
         args={[0.6, 0.2, 32]}
+        ref={smartphoneRef}
       />
 
       <TouchSistem
@@ -100,6 +104,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         position={[-0.9746321190187572, 5.173910287828369, 7.274120799127293]}
         rotation={[0, -0.3, 0]}
         args={[0.6, 0.2, 32]}
+        ref={pcLeftRef}
       />
 
       <TouchSistem
@@ -108,6 +113,7 @@ export default function Tent({ setCameraSpawn, setPeopleViewCam }) {
         position={[-3.4260952732574075, 5.206571605452476, 6.4372730871748916]}
         rotation={[0, -0.1, 0]}
         args={[0.6, 0.2, 32]}
+        ref={pcRightRef}
       />
       {/* <TransformControls
         ref={transformRef}

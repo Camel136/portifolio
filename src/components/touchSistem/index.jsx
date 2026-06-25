@@ -1,17 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { TransformControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
-export default function TouchSistem({
-  IsTimeToShow,
-  setInsideOfTent = () => {},
-  position = [0, 0, 0],
-  rotation = [0, 0, 0],
-  side = THREE.DoubleSide,
-  args = [0.8, 1.1, 32],
-}) {
-  const ref = useRef();
+function TouchSistem(
+  {
+    IsTimeToShow,
+    setInsideOfTent = () => {},
+    position = [0, 0, 0],
+    rotation = [0, 0, 0],
+    side = THREE.DoubleSide,
+    args = [0.8, 1.1, 32],
+  },
+  ref
+) {
+  const localRef = useRef();
+  const meshRef = ref || localRef;
   const [showRing, setShowRing] = useState(false);
   const colorPower = useRef(1);
   const time = useRef(0);
@@ -22,8 +26,8 @@ export default function TouchSistem({
     const pulse = Math.sin(time.current * 2) * 0.5 + 0.5;
     colorPower.current = 0.01 + pulse * 0.2;
 
-    if (ref.current) {
-      ref.current.material.opacity = colorPower.current;
+    if (meshRef.current) {
+      meshRef.current.material.opacity = colorPower.current;
     }
   });
 
@@ -37,7 +41,7 @@ export default function TouchSistem({
     <>
       {showRing && (
         <mesh
-          ref={ref}
+          ref={meshRef}
           position={position}
           rotation={rotation}
           onPointerDown={() => setInsideOfTent(true)}
@@ -54,3 +58,5 @@ export default function TouchSistem({
     </>
   );
 }
+
+export default forwardRef(TouchSistem);
