@@ -3,14 +3,16 @@ import { Canvas } from '@react-three/fiber';
 import Tent from './components/tent';
 // import { Perf } from 'r3f-perf';
 import PointerLockControlsCustom from './components/controls';
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import FlashLight from './components/target';
 import TextCustom from './components/text';
 import TouchSistem from './components/touchSistem';
 import * as THREE from 'three';
 import useInstruction from './components/utils/useInstruction';
 import Target from './components/target';
-import { Provider } from './components/context/provider';
+import { Context } from './components/context/context';
+
+import Modal from './components/modal';
 
 // npm run lint -- --fix
 
@@ -30,7 +32,12 @@ function App() {
   const [insideOfTent, setInsideOfTent] = useState(false);
   const [cameraSpawn, setCameraSpawn] = useState(null);
   const [peopleViewCam, setPeopleViewCam] = useState(null);
+
   const instruction = useInstruction(insideOfTent);
+  const { modalOpen, setModalOpen } = useContext(Context);
+  if (modalOpen) {
+    document.exitPointerLock();
+  }
 
   let init = false;
 
@@ -43,57 +50,58 @@ function App() {
       <header className="section header"></header>
 
       <div className="section canvas-container">
-        <Provider>
-          <Canvas
-            shadows
-            dpr={[1, 2]}
-            gl={{
-              antialias: true,
-              powerPreference: 'high-performance',
-            }}
-            camera={{
-              fov: 75,
-              near: 0.1,
-              far: 1000,
-            }}
-          >
-            <>
-              <PointerLockControlsCustom
-                otherTypeCam={insideOfTent}
-                cameraSpawn={cameraSpawn}
-                peopleViewCam={peopleViewCam}
-              />
+        <Canvas
+          shadows
+          dpr={[1, 2]}
+          gl={{
+            antialias: true,
+            powerPreference: 'high-performance',
+          }}
+          camera={{
+            fov: 75,
+            near: 0.1,
+            far: 1000,
+          }}
+        >
+          <>
+            <PointerLockControlsCustom
+              otherTypeCam={insideOfTent}
+              cameraSpawn={cameraSpawn}
+              peopleViewCam={peopleViewCam}
+            />
 
-              <Tent
-                setCameraSpawn={setCameraSpawn}
-                setPeopleViewCam={setPeopleViewCam}
-              />
-              <TouchSistem
-                IsTimeToShow={init}
-                setInsideOfTent={setInsideOfTent}
-                position={[
-                  -9.306830224712446, 5.32323169803203, -4.874134627868665,
-                ]}
-                rotation={[0, 1, 0]}
-                side={THREE.BackSide}
-                args={[0.2, 1.1, 32]}
-              />
-              {/* <TextCustom
+            <Tent
+              setCameraSpawn={setCameraSpawn}
+              setPeopleViewCam={setPeopleViewCam}
+            />
+            <TouchSistem
+              IsTimeToShow={init}
+              setInsideOfTent={setInsideOfTent}
+              position={[
+                -9.306830224712446, 5.32323169803203, -4.874134627868665,
+              ]}
+              rotation={[0, 1, 0]}
+              side={THREE.BackSide}
+              args={[0.2, 1.1, 32]}
+            />
+            {/* <TextCustom
               rot={[0, 1, 0]}
               pos={[0, 0, 0]}
               text="aperte ESC pra sair "
               color="white"
               IsTimeToShow={init}
             /> */}
-              {insideOfTent && <Target />}
-            </>
-          </Canvas>
-        </Provider>
+            {insideOfTent && <Target />}
+          </>
+        </Canvas>
+        <Modal open={modalOpen} onClose={() => setModalOpen(false)} />
       </div>
 
-      <footer className="section footer">
-        <p>{instruction}</p>
-      </footer>
+      {!modalOpen && (
+        <footer className="section footer">
+          <p>{instruction}</p>
+        </footer>
+      )}
     </div>
   );
 }

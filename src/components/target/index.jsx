@@ -50,7 +50,9 @@ export default function Target() {
         focusTime.current = 0;
         activated.current = false;
       }
+
       focusTime.current += delta; //aqui conta
+
       if (focusTime.current >= 2 && !activated.current) {
         activated.current = true;
 
