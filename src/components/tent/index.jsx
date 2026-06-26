@@ -1,5 +1,5 @@
-import { useGLTF, useTexture, TransformControls } from '@react-three/drei';
-import { useEffect, useRef, useContext } from 'react';
+import { useGLTF, useTexture } from '@react-three/drei';
+import { useEffect, useContext } from 'react';
 import * as THREE from 'three';
 import TouchSistem from '../touchSistem';
 import { Context } from '../context/context';

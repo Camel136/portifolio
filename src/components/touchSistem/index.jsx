@@ -1,6 +1,5 @@
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { TransformControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 function TouchSistem(
