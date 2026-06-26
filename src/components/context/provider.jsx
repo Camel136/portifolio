@@ -6,6 +6,7 @@ export function Provider({ children }) {
   const pcLeftRef = useRef();
   const pcRightRef = useRef();
   const [modalOpen, setModalOpen] = useState(false);
+  const [destiny, setDestiny] = useState(0);
 
   const value = {
     smartphoneRef,
@@ -13,6 +14,8 @@ export function Provider({ children }) {
     pcRightRef,
     modalOpen,
     setModalOpen,
+    destiny,
+    setDestiny,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

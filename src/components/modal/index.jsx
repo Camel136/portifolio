@@ -2,8 +2,11 @@ import './index.css';
 import ThreeJs from '../pages/threeJS';
 import WebSite from '../pages/webSite';
 import App from '../pages/app';
+import { useContext } from 'react';
+import { Context } from '../context/context';
 
 export default function Modal({ open, onClose }) {
+  const { destiny } = useContext(Context);
   function handleKeyDown(e) {
     if (e.key === 'Escape') {
       onClose();
@@ -14,7 +17,21 @@ export default function Modal({ open, onClose }) {
 
   if (!open) return null;
 
-  const webView = false;
+  function renderPage() {
+    switch (destiny) {
+      case 0:
+        return <ThreeJs />;
+
+      case 1:
+        return <WebSite />;
+
+      case 2:
+        return <App />;
+
+      default:
+        return <p>Página não encontrada.</p>;
+    }
+  }
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true">
@@ -31,11 +48,7 @@ export default function Modal({ open, onClose }) {
           </button>
         </div>
 
-        <div className="modal-content">
-          {/* <ThreeJs /> */}
-          {/* <WebSite /> */}
-          {/* <App /> */}
-        </div>
+        <div className="modal-content">{renderPage()}</div>
       </div>
     </div>
   );

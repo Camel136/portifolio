@@ -9,7 +9,8 @@ export default function Target() {
   const { camera } = useThree();
   const direction = new THREE.Vector3();
   const raycaster = new THREE.Raycaster();
-  const { smartphoneRef, pcLeftRef, pcRightRef } = useContext(Context);
+  const { smartphoneRef, pcLeftRef, pcRightRef, setModalOpen, setDestiny } =
+    useContext(Context);
   const currentTarget = useRef(null);
   const focusTime = useRef(0);
   const activated = useRef(false);
@@ -55,8 +56,16 @@ export default function Target() {
 
       if (focusTime.current >= 2 && !activated.current) {
         activated.current = true;
-
-        console.log('🔥 INTERAÇÃO ATIVADA:', target);
+        setModalOpen(true);
+        if (currentTarget.current.name === 'smartphoneRef') {
+          setDestiny(2);
+        }
+        if (currentTarget.current.name === 'pcLeftRef') {
+          setDestiny(1);
+        }
+        if (currentTarget.current.name === 'pcRightRef') {
+          setDestiny(0);
+        }
       }
     } else {
       currentTarget.current = null;
