@@ -4,7 +4,7 @@ export default function useInstruction(insideOfTent) {
   const instructions = [
     'Use o mouse para olhar ao redor da cena até que o acesso esteja visível.',
     'Bem-vindo ao meu portfólio.',
-    'Use o sistema de mira para localizar o que você deseja ler. É só manter a mira parada sobre o objeto.',
+    'Para ver o conteúdo desejado, aponte a mira para o alvo e mantenha-a fixa por 2 segundos. O conteúdo será aberto automaticamente em uma janela',
   ];
 
   const [instruction, setInstruction] = useState(instructions[0]);
