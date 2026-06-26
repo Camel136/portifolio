@@ -44,7 +44,7 @@ export default function Modal({ open, onClose }) {
             onPre
             aria-label="Fechar modal"
           >
-            Aperte Esc 2 vezes para sair
+            Aperte Esc para sair
           </button>
         </div>
 

@@ -15,7 +15,7 @@
 .modal-panel {
   width: min(92vw, 520px);
   max-height: 88vh;
-  background: rgba(18, 18, 18, 0.014);
+  background: rgba(0, 0, 0, 0.336);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 18px;
