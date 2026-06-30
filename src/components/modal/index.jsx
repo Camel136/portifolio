@@ -41,10 +41,9 @@ export default function Modal({ open, onClose }) {
             className="modal-close-button"
             type="button"
             onClick={onClose}
-            onPre
             aria-label="Fechar modal"
           >
-            Aperte Esc para sair
+            Fechar (Esc) para sair
           </button>
         </div>
 
