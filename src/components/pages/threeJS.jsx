@@ -1,7 +1,12 @@
-
 export default function ThreeJs() {
   return (
-    <>
+    <div
+      style={{
+        maxHeight: '70vh',
+        overflowY: 'auto',
+        paddingRight: '8px',
+      }}
+    >
       <div
         style={{
           display: 'flex',
@@ -65,6 +70,6 @@ export default function ThreeJs() {
       >
         Acessar git
       </a>
-    </>
+    </div>
   );
 }
