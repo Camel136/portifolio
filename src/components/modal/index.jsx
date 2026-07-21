@@ -2,18 +2,22 @@ import './index.css';
 import ThreeJs from '../pages/threeJS';
 import WebSite from '../pages/webSite';
 import App from '../pages/app';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Context } from '../context/context';
 
 export default function Modal({ open, onClose }) {
   const { destiny } = useContext(Context);
-  function handleKeyDown(e) {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  }
 
-  window.addEventListener('keydown', handleKeyDown);
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   if (!open) return null;
 

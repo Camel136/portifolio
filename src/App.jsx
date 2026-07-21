@@ -33,7 +33,7 @@ function App() {
 
   const instruction = useInstruction(insideOfTent);
   const { modalOpen, setModalOpen } = useContext(Context);
-  if (modalOpen) {
+  if (modalOpen && typeof document.exitPointerLock === 'function') {
     document.exitPointerLock();
   }
 
