@@ -6,7 +6,7 @@ import { useContext, useEffect } from 'react';
 import { Context } from '../context/context';
 
 export default function Modal({ open, onClose }) {
-  const { destiny } = useContext(Context);
+  const { destiny, isMobile } = useContext(Context);
 
   useEffect(() => {
     const handleKeyDown = e => {
@@ -47,7 +47,7 @@ export default function Modal({ open, onClose }) {
             onClick={onClose}
             aria-label="Fechar modal"
           >
-            Fechar (Esc) para sair
+            {isMobile ? 'Fechar (Toque)' : 'Fechar (Esc) para sair'}
           </button>
         </div>
 

@@ -37,7 +37,7 @@ export default function ThreeJs() {
         </span>
       </div>
 
-      <h2>Three JS</h2>
+      <h2 style={{ color: '#f7f2f2' }}>Three JS</h2>
 
       <p
         style={{

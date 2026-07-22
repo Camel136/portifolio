@@ -1,8 +1,9 @@
-
 export default function WebSite() {
   return (
     <>
-      <h2>Desenvolvimento dos E-commerces Rider e Melissa</h2>
+      <h2 style={{ color: '#f7f2f2' }}>
+        Desenvolvimento dos E-commerces Rider e Melissa
+      </h2>
       <p
         style={{
           fontSize: '0.8rem',

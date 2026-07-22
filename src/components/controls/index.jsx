@@ -1,6 +1,7 @@
 import { PointerLockControls, OrbitControls } from '@react-three/drei';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useThree } from '@react-three/fiber';
+import { Context } from '../context/context';
 
 export default function PointerLockControlsCustom({
   otherTypeCam,
@@ -8,7 +9,7 @@ export default function PointerLockControlsCustom({
   peopleViewCam,
 }) {
   const { camera, gl } = useThree();
-  const [isMobile, setIsMobile] = useState(false);
+  const { setIsMobile, isMobile } = useContext(Context);
   const dragState = useRef({ active: false, x: 0, y: 0 });
 
   const ANGLE = {

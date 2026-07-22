@@ -1,8 +1,7 @@
-
 export default function App() {
   return (
     <>
-      <h2>Desenvolvimento dos APP Melissa</h2>
+      <h2 style={{ color: '#f7f2f2' }}>Desenvolvimento dos APP Melissa</h2>
       <p
         style={{
           fontSize: '0.8rem',
