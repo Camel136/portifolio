@@ -1,25 +1,18 @@
+import { useTranslation } from '../../i18n/i18nContext';
+import TechList from './TechList';
+
+const PROJECT_URL = 'https://www.rider.com.br/';
+
 export default function WebSite() {
+  const { messages } = useTranslation();
+  const page = messages.pages.webSite;
+
   return (
     <>
-      <h2 style={{ color: '#f7f2f2' }}>
-        Desenvolvimento dos E-commerces Rider e Melissa
-      </h2>
-      <p
-        style={{
-          fontSize: '0.8rem',
-        }}
-      >
-        ● Uso da plataforma Oracle Commerce Cloud e Firebase. ● Atuação por meio
-        de metodologias ágeis (Scrum). ● Realização de code reviews e
-        refinamentos técnicos para garantir a qualidade e melhor performance do
-        código.
-      </p>
-      <p>
-        <strong>Tecnologias utilizadas:</strong>
-        • React
-        <br />• scss
-      </p>
-      <a href="https://www.rider.com.br/">Acessar projeto</a>
+      <h2 className="page-title">{page.title}</h2>
+      <p className="page-description">{page.description}</p>
+      <TechList items={page.technologies} />
+      <a href={PROJECT_URL}>{page.link}</a>
     </>
   );
 }

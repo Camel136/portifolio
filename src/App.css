@@ -62,4 +62,31 @@ html,
 .header {
   background: #1e1e1e;
   color: white;
+  justify-content: flex-end;
+  padding: 6px 12px;
+}
+
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+}
+
+.lang-switcher__button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lang-switcher__button:hover {
+  color: #fff;
+}
+
+.lang-switcher__button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }

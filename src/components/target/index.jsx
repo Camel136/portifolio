@@ -4,79 +4,70 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { useHelper } from '@react-three/drei';
 import { Context } from '../context/context';
 
+const FOCUS_SECONDS = 2;
+const DESTINY_BY_TARGET = {
+  smartphoneRef: 2,
+  pcLeftRef: 1,
+  pcRightRef: 0,
+};
+
+// Scratch objects reused every frame to avoid per-frame allocations.
+const direction = new THREE.Vector3();
+const raycaster = new THREE.Raycaster();
+
 export default function Target() {
   const lightRef = useRef();
-  const { camera } = useThree();
-  const direction = new THREE.Vector3();
-  const raycaster = new THREE.Raycaster();
+  const camera = useThree(state => state.camera);
   const { smartphoneRef, pcLeftRef, pcRightRef, setModalOpen, setDestiny } =
     useContext(Context);
   const currentTarget = useRef(null);
   const focusTime = useRef(0);
   const activated = useRef(false);
 
+  // The helper's cone is what the user sees as the crosshair.
   useHelper(lightRef, THREE.SpotLightHelper, 'white');
 
   useFrame((_, delta) => {
-    if (!lightRef.current) return;
-    // spotlight segue posição da câmera
-    lightRef.current.position.copy(camera.position);
+    const light = lightRef.current;
+    if (!light) return;
 
-    // pega frente da câmera baseada no quaternion
-    direction.set(0, 0, -1);
+    light.position.copy(camera.position);
+    direction.set(0, 0, -1).applyQuaternion(camera.quaternion);
+    light.target.position.copy(camera.position).add(direction);
+    light.target.updateMatrixWorld();
 
-    direction.applyQuaternion(camera.quaternion);
-
-    // move target da spotlight
-    lightRef.current.target.position.copy(
-      direction.clone().add(camera.position)
-    );
-
-    ///hita a mira
-    raycaster.set(lightRef.current.position, direction);
+    raycaster.set(light.position, direction);
 
     const targets = [
       smartphoneRef.current,
       pcLeftRef.current,
       pcRightRef.current,
     ].filter(Boolean);
+    const hit = raycaster.intersectObjects(targets, false)[0];
 
-    const hits = raycaster.intersectObjects(targets, false);
-
-    if (hits.length > 0) {
-      const target = hits[0].object;
-
-      if (currentTarget.current !== target) {
-        currentTarget.current = target;
-        focusTime.current = 0;
-        activated.current = false;
-      }
-
-      focusTime.current += delta; //aqui conta
-
-      if (focusTime.current >= 2 && !activated.current) {
-        activated.current = true;
-        setModalOpen(true);
-        if (currentTarget.current.name === 'smartphoneRef') {
-          setDestiny(2);
-        }
-        if (currentTarget.current.name === 'pcLeftRef') {
-          setDestiny(1);
-        }
-        if (currentTarget.current.name === 'pcRightRef') {
-          setDestiny(0);
-        }
-      }
-    } else {
+    if (!hit) {
       currentTarget.current = null;
+      focusTime.current = 0;
+      activated.current = false;
+      return;
+    }
+
+    if (currentTarget.current !== hit.object) {
+      currentTarget.current = hit.object;
       focusTime.current = 0;
       activated.current = false;
     }
 
-    ////
-    lightRef.current.target.updateMatrixWorld();
+    focusTime.current += delta;
+    if (activated.current || focusTime.current < FOCUS_SECONDS) return;
+
+    activated.current = true;
+    const destiny = DESTINY_BY_TARGET[hit.object.name];
+    if (destiny !== undefined) setDestiny(destiny);
+    setModalOpen(true);
   });
 
+  // No castShadow: the scene is fully baked, so a shadow pass was pure cost.
   return (
     <spotLight
       ref={lightRef}
@@ -86,8 +77,6 @@ export default function Target() {
       distance={9}
       decay={2}
       color="#ffffff"
-      castShadow
-      shadow-mapSize={[1024, 1024]}
     />
   );
 }

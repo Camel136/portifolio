@@ -1,28 +1,21 @@
 import { useEffect, useState } from 'react';
 
-export default function useInstruction(insideOfTent) {
-  const instructions = [
-    'Use o mouse para olhar ao redor da cena até que o acesso esteja visível.',
-    'Bem-vindo ao meu portfólio.',
-    'Para ver o conteúdo desejado, aponte a mira para o alvo e mantenha-a fixa por 2 segundos. O conteúdo será aberto automaticamente em uma janela',
-  ];
+const AIM_TIP_DELAY_MS = 4000;
 
-  const [instruction, setInstruction] = useState(instructions[0]);
+// Returns an i18n key; translate it with `t()` at the call site.
+export default function useInstruction(insideOfTent) {
+  const [showAimTip, setShowAimTip] = useState(false);
 
   useEffect(() => {
-    if (!insideOfTent) {
-      setInstruction(instructions[0]);
-      return;
-    }
+    if (!insideOfTent) return;
 
-    setInstruction(instructions[1]);
-
-    const timer = setTimeout(() => {
-      setInstruction(instructions[2]);
-    }, 4000);
-
-    return () => clearTimeout(timer);
+    const timer = setTimeout(() => setShowAimTip(true), AIM_TIP_DELAY_MS);
+    return () => {
+      clearTimeout(timer);
+      setShowAimTip(false);
+    };
   }, [insideOfTent]);
 
-  return instruction;
+  if (!insideOfTent) return 'instructions.lookAround';
+  return showAimTip ? 'instructions.aim' : 'instructions.welcome';
 }

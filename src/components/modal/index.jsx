@@ -4,38 +4,32 @@ import WebSite from '../pages/webSite';
 import App from '../pages/app';
 import { useContext, useEffect } from 'react';
 import { Context } from '../context/context';
+import { useTranslation } from '../../i18n/i18nContext';
+
+const PAGES = {
+  0: ThreeJs,
+  1: WebSite,
+  2: App,
+};
 
 export default function Modal({ open, onClose }) {
   const { destiny, isMobile } = useContext(Context);
+  const { t } = useTranslation();
 
   useEffect(() => {
+    if (!open) return;
+
     const handleKeyDown = e => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
+      if (e.key === 'Escape') onClose();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [open, onClose]);
 
   if (!open) return null;
 
-  function renderPage() {
-    switch (destiny) {
-      case 0:
-        return <ThreeJs />;
-
-      case 1:
-        return <WebSite />;
-
-      case 2:
-        return <App />;
-
-      default:
-        return <p>Página não encontrada.</p>;
-    }
-  }
+  const Page = PAGES[destiny];
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true">
@@ -45,13 +39,15 @@ export default function Modal({ open, onClose }) {
             className="modal-close-button"
             type="button"
             onClick={onClose}
-            aria-label="Fechar modal"
+            aria-label={t('modal.closeLabel')}
           >
-            {isMobile ? 'Fechar (Toque)' : 'Fechar (Esc) para sair'}
+            {t(isMobile ? 'modal.closeMobile' : 'modal.closeDesktop')}
           </button>
         </div>
 
-        <div className="modal-content">{renderPage()}</div>
+        <div className="modal-content">
+          {Page ? <Page /> : <p>{t('modal.notFound')}</p>}
+        </div>
       </div>
     </div>
   );
