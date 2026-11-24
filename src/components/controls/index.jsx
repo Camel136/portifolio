@@ -1,7 +1,66 @@
 import { PointerLockControls, OrbitControls } from '@react-three/drei';
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useThree } from '@react-three/fiber';
 import { Context } from '../context/context';
+
+const MIN_POLAR_ANGLE = Math.PI / 6; // 30deg
+const MAX_POLAR_ANGLE = Math.PI / 2.4; // 75deg
+const TOUCH_SENSITIVITY = 0.005;
+const PITCH_LIMIT = Math.PI / 2 - 0.1;
+
+function applyPose(camera, pose) {
+  camera.position.copy(pose.position);
+  camera.quaternion.copy(pose.quaternion);
+}
+
+// Lives outside the component so three.js objects are mutated in plain
+// event handlers instead of inside React render scope.
+function attachTouchLook(domElement, camera) {
+  const drag = { active: false, x: 0, y: 0 };
+  domElement.style.touchAction = 'none';
+
+  const onPointerDown = event => {
+    if (event.pointerType !== 'touch') return;
+    drag.active = true;
+    drag.x = event.clientX;
+    drag.y = event.clientY;
+    event.preventDefault();
+  };
+
+  const onPointerMove = event => {
+    if (!drag.active || event.pointerType !== 'touch') return;
+
+    const deltaX = event.clientX - drag.x;
+    const deltaY = event.clientY - drag.y;
+    drag.x = event.clientX;
+    drag.y = event.clientY;
+
+    camera.rotation.order = 'YXZ';
+    camera.rotation.y -= deltaX * TOUCH_SENSITIVITY;
+    camera.rotation.x = Math.max(
+      -PITCH_LIMIT,
+      Math.min(PITCH_LIMIT, camera.rotation.x - deltaY * TOUCH_SENSITIVITY)
+    );
+
+    event.preventDefault();
+  };
+
+  const stopDragging = () => {
+    drag.active = false;
+  };
+
+  const listeners = [
+    ['pointerdown', onPointerDown],
+    ['pointermove', onPointerMove],
+    ['pointerup', stopDragging],
+    ['pointerleave', stopDragging],
+    ['pointercancel', stopDragging],
+  ];
+
+  listeners.forEach(([type, fn]) => domElement.addEventListener(type, fn));
+  return () =>
+    listeners.forEach(([type, fn]) => domElement.removeEventListener(type, fn));
+}
 
 export default function PointerLockControlsCustom({
   otherTypeCam,
@@ -9,114 +68,30 @@ export default function PointerLockControlsCustom({
   peopleViewCam,
 }) {
   const { camera, gl } = useThree();
-  const { setIsMobile, isMobile } = useContext(Context);
-  const dragState = useRef({ active: false, x: 0, y: 0 });
-
-  const ANGLE = {
-    DEG_30: Math.PI / 6,
-    DEG_45: Math.PI / 4,
-    DEG_60: Math.PI / 3,
-    DEG_90: Math.PI / 2,
-    DEG_75: Math.PI / 2.4,
-    DEG_180: Math.PI,
-  };
+  const { isMobile } = useContext(Context);
 
   useEffect(() => {
-    if (cameraSpawn && !otherTypeCam) {
-      camera.position.copy(cameraSpawn.position);
-      camera.quaternion.copy(cameraSpawn.quaternion);
-    }
-    if (peopleViewCam && otherTypeCam) {
-      camera.position.copy(peopleViewCam.position);
-      camera.quaternion.copy(peopleViewCam.quaternion);
-    }
-  }, [cameraSpawn, peopleViewCam, otherTypeCam]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const checkMobile = () => {
-      const hasTouchScreen =
-        window.matchMedia('(pointer: coarse)').matches ||
-        navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.innerWidth <= 1024;
-
-      setIsMobile(hasTouchScreen && isSmallScreen);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    const pose = otherTypeCam ? peopleViewCam : cameraSpawn;
+    if (pose) applyPose(camera, pose);
+  }, [camera, cameraSpawn, peopleViewCam, otherTypeCam]);
 
   useEffect(() => {
     if (!isMobile) return;
-
-    const domElement = gl.domElement;
-    domElement.style.touchAction = 'none';
-
-    const onPointerDown = event => {
-      if (event.pointerType !== 'touch') return;
-      dragState.current.active = true;
-      dragState.current.x = event.clientX;
-      dragState.current.y = event.clientY;
-      event.preventDefault();
-    };
-
-    const onPointerMove = event => {
-      if (!dragState.current.active || event.pointerType !== 'touch') return;
-
-      const deltaX = event.clientX - dragState.current.x;
-      const deltaY = event.clientY - dragState.current.y;
-
-      dragState.current.x = event.clientX;
-      dragState.current.y = event.clientY;
-
-      camera.rotation.order = 'YXZ';
-      camera.rotation.y -= deltaX * 0.005;
-      camera.rotation.x -= deltaY * 0.005;
-      camera.rotation.x = Math.max(
-        -Math.PI / 2 + 0.1,
-        Math.min(Math.PI / 2 - 0.1, camera.rotation.x)
-      );
-
-      event.preventDefault();
-    };
-
-    const stopDragging = () => {
-      dragState.current.active = false;
-    };
-
-    domElement.addEventListener('pointerdown', onPointerDown);
-    domElement.addEventListener('pointermove', onPointerMove);
-    domElement.addEventListener('pointerup', stopDragging);
-    domElement.addEventListener('pointerleave', stopDragging);
-    domElement.addEventListener('pointercancel', stopDragging);
-
-    return () => {
-      domElement.removeEventListener('pointerdown', onPointerDown);
-      domElement.removeEventListener('pointermove', onPointerMove);
-      domElement.removeEventListener('pointerup', stopDragging);
-      domElement.removeEventListener('pointerleave', stopDragging);
-      domElement.removeEventListener('pointercancel', stopDragging);
-    };
+    return attachTouchLook(gl.domElement, camera);
   }, [camera, gl, isMobile]);
 
   if (!otherTypeCam) {
     return (
       <OrbitControls
         makeDefault
-        minPolarAngle={ANGLE.DEG_30}
-        maxPolarAngle={ANGLE.DEG_75}
+        minPolarAngle={MIN_POLAR_ANGLE}
+        maxPolarAngle={MAX_POLAR_ANGLE}
         enableZoom={false}
       />
     );
   }
 
-  if (isMobile) {
-    return null;
-  }
+  if (isMobile) return null;
 
   return <PointerLockControls />;
 }

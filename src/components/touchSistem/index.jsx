@@ -1,11 +1,14 @@
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+
+const SHOW_DELAY_MS = 10000;
+const MIN_OPACITY = 0.01;
 
 function TouchSistem(
   {
     IsTimeToShow,
-    setInsideOfTent = () => {},
+    setInsideOfTent,
     position = [0, 0, 0],
     rotation = [0, 0, 0],
     side = THREE.DoubleSide,
@@ -17,46 +20,39 @@ function TouchSistem(
   const localRef = useRef();
   const meshRef = ref || localRef;
   const [showRing, setShowRing] = useState(false);
-  const colorPower = useRef(1);
   const time = useRef(0);
 
+  useEffect(() => {
+    if (!IsTimeToShow) return;
+    const timer = setTimeout(() => setShowRing(true), SHOW_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [IsTimeToShow]);
+
   useFrame((_, delta) => {
+    if (!meshRef.current) return;
     time.current += delta;
-
     const pulse = Math.sin(time.current * 2) * 0.5 + 0.5;
-    colorPower.current = 0.01 + pulse * 0.2;
-
-    if (meshRef.current) {
-      meshRef.current.material.opacity = colorPower.current;
-    }
+    meshRef.current.material.opacity = MIN_OPACITY + pulse * 0.2;
   });
 
-  if (IsTimeToShow) {
-    setTimeout(() => {
-      setShowRing(true);
-    }, 10000);
-  }
+  if (!showRing) return null;
 
   return (
-    <>
-      {showRing && (
-        <mesh
-          name={name}
-          ref={meshRef}
-          position={position}
-          rotation={rotation}
-          onPointerDown={() => setInsideOfTent(true)}
-        >
-          <ringGeometry args={args} />
-          <meshBasicMaterial
-            color="white"
-            transparent
-            opacity={colorPower.current}
-            side={side}
-          />
-        </mesh>
-      )}
-    </>
+    <mesh
+      name={name}
+      ref={meshRef}
+      position={position}
+      rotation={rotation}
+      onPointerDown={setInsideOfTent && (() => setInsideOfTent(true))}
+    >
+      <ringGeometry args={args} />
+      <meshBasicMaterial
+        color="white"
+        transparent
+        opacity={MIN_OPACITY}
+        side={side}
+      />
+    </mesh>
   );
 }
 

@@ -1,74 +1,29 @@
-export default function ThreeJs() {
-  return (
-    <div
-      style={{
-        maxHeight: '70vh',
-        overflowY: 'auto',
-        paddingRight: '8px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-          marginBottom: '16px',
-        }}
-      >
-        <iframe
-          src="https://camel136.github.io/reactScene/"
-          title="ThreeJS Preview"
-          style={{
-            width: '100%',
-            height: '250px',
-            border: 'none',
-          }}
-        />
+import { useTranslation } from '../../i18n/i18nContext';
+import TechList from './TechList';
 
-        <span
-          style={{
-            fontSize: '0.6rem',
-            textAlign: 'center',
-            color: '#666',
-            fontStyle: 'italic',
-          }}
-        >
-          Clique na imagem para interagir.
-        </span>
+const PROJECT_URL = 'https://camel136.github.io/reactScene/';
+
+export default function ThreeJs() {
+  const { messages } = useTranslation();
+  const page = messages.pages.threeJs;
+
+  return (
+    <div className="page-scroll">
+      <div className="page-preview">
+        <iframe
+          className="page-preview__frame"
+          src={PROJECT_URL}
+          title={page.previewTitle}
+          loading="lazy"
+        />
+        <span className="page-preview__hint">{page.previewHint}</span>
       </div>
 
-      <h2 style={{ color: '#f7f2f2' }}>Three JS</h2>
-
-      <p
-        style={{
-          fontSize: '0.8rem',
-        }}
-      >
-        Desenvolvi este cenário interativo em 3D utilizando React e Three.js
-        para transformar a experiência do meu portfólio em algo imersivo.
-        Diferente de um site estático, aqui o usuário pode explorar o ambiente,
-        unindo performance, design e animação dentro do ecossistema React.
-      </p>
-
-      <p>
-        <strong>Tecnologias utilizadas:</strong>
-        <br />
-        • Blender (modelagem do cenário)
-        <br />
-        • React + Vite
-        <br />
-        • React Three Fiber
-        <br />
-        • Drei
-        <br />• Hooks personalizados para otimização
-      </p>
-      <a
-        style={{
-          fontSize: '0.8rem',
-        }}
-        href="https://camel136.github.io/reactScene/"
-      >
-        Acessar git
+      <h2 className="page-title">{page.title}</h2>
+      <p className="page-description">{page.description}</p>
+      <TechList items={page.technologies} />
+      <a className="page-description" href={PROJECT_URL}>
+        {page.link}
       </a>
     </div>
   );

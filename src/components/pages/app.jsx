@@ -1,28 +1,15 @@
+import { useTranslation } from '../../i18n/i18nContext';
+import TechList from './TechList';
+
 export default function App() {
+  const { messages } = useTranslation();
+  const page = messages.pages.app;
+
   return (
     <>
-      <h2 style={{ color: '#f7f2f2' }}>Desenvolvimento dos APP Melissa</h2>
-      <p
-        style={{
-          fontSize: '0.8rem',
-        }}
-      >
-        Gestão de versionamento de código (Git e GitHub). Deploy de versões do
-        aplicativo na Google Play e Apple Store (iOS e Android). Realização de
-        code reviews e refinamentos técnicos. Sistemas de push notification.
-        Tracking de usuario Hooks de performance
-      </p>
-      <p>
-        <strong>Tecnologias utilizadas:</strong>
-        <br />
-        React native
-        <br />
-        Styled Components
-        <br />
-        Redux Sagas
-        <br />
-        Oracle Commerce Cloud e Firebase.
-      </p>
+      <h2 className="page-title">{page.title}</h2>
+      <p className="page-description">{page.description}</p>
+      <TechList items={page.technologies} />
     </>
   );
 }
